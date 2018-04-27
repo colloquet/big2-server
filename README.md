@@ -2,6 +2,8 @@
 
 [Live Demo](https://dee.colloque.io/)
 
+Client source: https://github.com/colloquet/big2-server
+
 ## Setup
 
 ``` bash
