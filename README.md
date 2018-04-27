@@ -5,6 +5,11 @@
 ## Setup
 
 ``` bash
+# define reCAPTCHA site key and secret key in .env.sample and rename to .env
+# you can get API keys here: http://www.google.com/recaptcha/admin
+RECAPTCHA_SITE_KEY=XXX
+RECAPTCHA_SECRET_KEY=XXX
+
 # install dependencies
 npm install
 
