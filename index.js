@@ -142,7 +142,9 @@ async function getStatistics() {
   }
 }
 
-io.set('origins', 'localhost:* https://dee.colloque.io:*')
+if (process.env.NODE_ENV === 'production') {
+  io.set('origins', 'https://dee.colloque.io:*')
+}
 
 io.on('connection', (socket) => {
   socket.on('choose_side', async ({
