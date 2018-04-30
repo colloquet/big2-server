@@ -12,6 +12,10 @@ Client source: https://github.com/colloquet/big2-server
 RECAPTCHA_SITE_KEY=XXX
 RECAPTCHA_SECRET_KEY=XXX
 
+# create txt files to store results
+touch result-1.txt
+touch result-2.txt
+
 # install dependencies
 npm install
 
