@@ -119,6 +119,13 @@ async function getModeStatistics(mode) {
     const bCount = (data.match(/B/g) || []).length
     const total = aCount + bCount
 
+    if (total === 0) {
+      return {
+        A: 0,
+        B: 0,
+      }
+    }
+
     return {
       A: (aCount / total * 100).toFixed(2),
       B: (bCount / total * 100).toFixed(2),
