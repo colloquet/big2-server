@@ -17,16 +17,16 @@ touch result-1.txt
 touch result-2.txt
 
 # install dependencies
-npm install
+yarn install
 
 # start development server
-npm start
+yarn start
 
 # start production server using PM2
-npm run production
+yarn run production
 
 # test big2 rules engine
-npm run test
+yarn run test
 ```
 
 ## License
