@@ -2,7 +2,7 @@
   "extends": "airbnb-base",
   "plugins": ["jest"],
   "rules": {
-    "semi": 0,
+    "no-mixed-operators": 0,
     "no-underscore-dangle": 0,
     "no-console": 0,
     "func-names": 0
