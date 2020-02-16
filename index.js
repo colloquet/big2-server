@@ -4,13 +4,13 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const fs = require('fs');
 const ReCAPTCHA = require('recaptcha2');
+const { Big2Engine } = require('big2-util');
 
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const Room = require('./models/Room');
-const big2Engine = require('./big2Engine');
 
 const recaptcha = new ReCAPTCHA({
   siteKey: process.env.RECAPTCHA_SITE_KEY,
@@ -49,7 +49,7 @@ function getRoomBySocketId(socketId) {
 }
 
 function cleanUp() {
-  Object.keys(rooms).forEach((id) => {
+  Object.keys(rooms).forEach(id => {
     const room = rooms[id];
     if (!Object.keys(room.members).length) {
       delete rooms[id];
@@ -93,7 +93,7 @@ function startGame(room) {
 }
 
 function recordResult(side, mode) {
-  fs.appendFile(`result-${mode}.txt`, `${side}\n`, (err) => {
+  fs.appendFile(`result-${mode}.txt`, `${side}\n`, err => {
     if (err) {
       console.log('error writing result', err);
     }
@@ -131,10 +131,7 @@ async function getModeStatistics(mode) {
 
 async function getStatistics() {
   try {
-    const [mode1Stats, mode2Stats] = await Promise.all([
-      getModeStatistics(1),
-      getModeStatistics(2),
-    ]);
+    const [mode1Stats, mode2Stats] = await Promise.all([getModeStatistics(1), getModeStatistics(2)]);
     return {
       1: mode1Stats,
       2: mode2Stats,
@@ -149,10 +146,8 @@ if (process.env.NODE_ENV === 'production') {
   io.set('origins', 'https://dee.colloque.io:*');
 }
 
-io.on('connection', (socket) => {
-  socket.on('choose_side', async ({
-    side, name, captchaResponse, mode = 1,
-  }, callback) => {
+io.on('connection', socket => {
+  socket.on('choose_side', async ({ side, name, captchaResponse, mode = 1 }, callback) => {
     try {
       await recaptcha.validate(captchaResponse);
       const alreadyInRoom = getRoomBySocketId(socket.id);
@@ -186,13 +181,13 @@ io.on('connection', (socket) => {
   socket.on('play_cards', (cards, callback) => {
     const room = getRoomBySocketId(socket.id);
     if (room) {
-      const isValidCombination = big2Engine.validateCombination(cards);
+      const isValidCombination = Big2Engine.validateCombination(cards);
       if (!isValidCombination) {
         socket.emit('game_error', '錯誤組合！');
         return;
       }
 
-      const isLegalMove = big2Engine.validateMove(room.meta.lastPlayedCards, cards);
+      const isLegalMove = Big2Engine.validateMove(room.meta.lastPlayedCards, cards);
       if (!isLegalMove) {
         socket.emit('game_error', '錯誤舉動！');
         return;
@@ -220,7 +215,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('leave_room', (callback) => {
+  socket.on('leave_room', callback => {
     leaveRoom(socket);
     callback();
   });
